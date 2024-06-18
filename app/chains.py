@@ -28,7 +28,8 @@ def create_chain():
     llm = QianfanLLMEndpoint()
     # llm = Tongyi(model_name="qwen-turbo")
     # llm = BaichuanLLM()
-    vectorstore = FAISS.load_local('app/vectors', QianfanEmbeddingsEndpoint(model="bge_large_zh", endpoint="bge_large_zh"), allow_dangerous_deserialization=True)
+    vectors_path = os.path.join(os.getcwd(), "app/vectors")
+    vectorstore = FAISS.load_local(vectors_path, QianfanEmbeddingsEndpoint(model="bge_large_zh", endpoint="bge_large_zh"), allow_dangerous_deserialization=True)
     retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 6})
     contextualize_q_system_prompt = """Given a chat history and the latest user question \
     which might reference context in the chat history, formulate a standalone question \
