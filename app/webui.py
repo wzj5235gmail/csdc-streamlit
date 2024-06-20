@@ -26,8 +26,8 @@ conversational_rag_chain = create_chain()
 st.set_page_config(
     page_title="中国结算业务规则问答助手",
     page_icon=":robot:",
-    layout="wide",
-    initial_sidebar_state="centered",
+    layout="centered",
+    initial_sidebar_state="collapsed",
     menu_items=None,
 )
 
