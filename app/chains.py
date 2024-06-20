@@ -14,6 +14,7 @@ import streamlit as st
 dotenv.load_dotenv()
 
 MAX_MSG_IN_HISTORY = int(os.getenv("MAX_MSG_IN_HISTORY"))
+VECTOR_STORE = 'vectors_shenzhen'
 
 chat_histories = {}
 
@@ -29,7 +30,7 @@ def create_chain():
     # llm = Tongyi(model_name="qwen-turbo")
     # llm = BaichuanLLM()
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    vectors_path = os.path.join(script_dir, "vectors")
+    vectors_path = os.path.join(script_dir, VECTOR_STORE)
     vectorstore = FAISS.load_local(vectors_path, QianfanEmbeddingsEndpoint(model="bge_large_zh", endpoint="bge_large_zh"), allow_dangerous_deserialization=True)
     retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 6})
     contextualize_q_system_prompt = """Given a chat history and the latest user question \
