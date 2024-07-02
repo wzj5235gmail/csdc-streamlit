@@ -1,13 +1,30 @@
 import streamlit as st
 from chains import create_chain
 
-conversational_rag_chain = create_chain()
+st.set_page_config(
+    page_title="中国结算业务规则AI问答助手",
+    page_icon="😁",
+    layout="centered",
+    initial_sidebar_state="auto",
+    menu_items=None,
+)
 
+conversational_rag_chain = create_chain(st.session_state.market) \
+    if "market" in st.session_state \
+    else create_chain("vectors_shenzhen")
+
+with st.sidebar:
+    st.header("选择市场：")
+    if st.button("深圳", use_container_width=True):
+        st.session_state.market = "vectors_shenzhen"
+        st.success("知识库已切换为深圳市场")
+    if st.button("总部", use_container_width=True):
+        st.session_state.market = "vectors_zongbu"
+        st.success("知识库已切换为总部市场")
 # if "logged_in" not in st.session_state:
 #     st.session_state.logged_in = False
 #     st.session_state.username = ""
 
-# with st.sidebar:
 #     if st.session_state.logged_in:
 #         st.header(f"Welcome, {st.session_state.username}!")
 #     else:
@@ -23,13 +40,6 @@ conversational_rag_chain = create_chain()
 #           else:
 #               st.error("Invalid username or password")
 
-st.set_page_config(
-    page_title="中国结算业务规则问答助手",
-    page_icon=":robot:",
-    layout="centered",
-    initial_sidebar_state="collapsed",
-    menu_items=None,
-)
 
 st.title("中国结算业务规则问答助手")
 st.markdown("<br>", unsafe_allow_html=True)

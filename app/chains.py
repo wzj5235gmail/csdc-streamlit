@@ -14,7 +14,6 @@ import streamlit as st
 dotenv.load_dotenv()
 
 MAX_MSG_IN_HISTORY = int(os.getenv("MAX_MSG_IN_HISTORY"))
-VECTOR_STORE = 'vectors_shenzhen'
 
 chat_histories = {}
 
@@ -23,15 +22,22 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
         chat_histories[session_id] = ChatMessageHistory()
     return chat_histories[session_id]
 
-def create_chain():
+def create_chain(vectors):
     # llm = QianfanLLMEndpoint(model="ERNIE-4.0-8K-Preview",)
     # llm = QianfanLLMEndpoint(model="ERNIE-Speed-8K")
     llm = QianfanLLMEndpoint()
     # llm = Tongyi(model_name="qwen-turbo")
     # llm = BaichuanLLM()
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    vectors_path = os.path.join(script_dir, VECTOR_STORE)
-    vectorstore = FAISS.load_local(vectors_path, QianfanEmbeddingsEndpoint(model="bge_large_zh", endpoint="bge_large_zh"), allow_dangerous_deserialization=True)
+    vectors_path = os.path.join(script_dir, vectors)
+    vectorstore = FAISS.load_local(
+        vectors_path, 
+        QianfanEmbeddingsEndpoint(
+            model="bge_large_zh", 
+            endpoint="bge_large_zh"
+        ),
+        allow_dangerous_deserialization=True,
+    )
     retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 6})
     contextualize_q_system_prompt = """Given a chat history and the latest user question \
     which might reference context in the chat history, formulate a standalone question \
@@ -63,7 +69,10 @@ def create_chain():
         ]
     )
     question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
-    rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
+    rag_chain = create_retrieval_chain(
+        history_aware_retriever,
+        question_answer_chain
+    )
     conversational_rag_chain = RunnableWithMessageHistory(
         rag_chain,
         get_session_history,
