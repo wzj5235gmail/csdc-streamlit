@@ -30,6 +30,7 @@ def create_chain(vectors):
     # llm = BaichuanLLM()
     script_dir = os.path.dirname(os.path.abspath(__file__))
     vectors_path = os.path.join(script_dir, vectors)
+    print(vectors_path)
     vectorstore = FAISS.load_local(
         vectors_path, 
         QianfanEmbeddingsEndpoint(
