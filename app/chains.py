@@ -25,8 +25,8 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
 def create_chain(vectors):
     # llm = QianfanLLMEndpoint(model="ERNIE-4.0-8K-Preview",)
     # llm = QianfanLLMEndpoint(model="ERNIE-Speed-8K")
-    llm = QianfanLLMEndpoint()
-    # llm = Tongyi(model_name="qwen-turbo")
+    # llm = QianfanLLMEndpoint()
+    llm = Tongyi(model_name="qwen-max")
     # llm = BaichuanLLM()
     script_dir = os.path.dirname(os.path.abspath(__file__))
     vectors_path = os.path.join(script_dir, vectors)
@@ -58,9 +58,9 @@ def create_chain(vectors):
         你是一个回答中国结算深圳分公司业务指南相关问题的助手。\
         请使用以下检索到的上下文来回答问题。\
         如果你不知道答案，或者遇到与上下文无关的问题，就直接说“根据已知内容无法回答，请修改问题。”。\
-        如果问题范围模糊，难以回答，不要随便回答，要求用户澄清问题。\
-        使用序号要点，并保持答案简洁。\
         {context}"""
+        # 如果问题范围模糊，难以回答，不要随便回答，要求用户澄清问题。\
+        # 使用序号要点，并保持答案简洁。\
         # 回答字数不要超过50字。\
     qa_prompt = ChatPromptTemplate.from_messages(
         [
