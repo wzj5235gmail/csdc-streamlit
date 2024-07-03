@@ -14,13 +14,13 @@ conversational_rag_chain = create_chain(st.session_state.market) \
     else create_chain("vectors_shenzhen")
 
 with st.sidebar:
-    st.header("选择市场：")
-    if st.button("深圳", use_container_width=True):
+    st.header("选择知识库：")
+    if st.button("深圳市场规则", use_container_width=True):
         st.session_state.market = "vectors_shenzhen"
-        st.success("知识库已切换为深圳市场")
-    if st.button("总部", use_container_width=True):
+        st.success("知识库已切换为深圳市场规则")
+    if st.button("总部规则", use_container_width=True):
         st.session_state.market = "vectors_zongbu"
-        st.success("知识库已切换为总部市场")
+        st.success("知识库已切换为总部规则")
 # if "logged_in" not in st.session_state:
 #     st.session_state.logged_in = False
 #     st.session_state.username = ""
