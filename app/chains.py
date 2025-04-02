@@ -39,7 +39,7 @@ def create_chain(vectors):
         ),
         allow_dangerous_deserialization=True,
     )
-    retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 6})
+    retriever = vectorstore.as_retriever(search_type="similarity", search_kwargs={"k": 20})
     contextualize_q_system_prompt = """Given a chat history and the latest user question \
     which might reference context in the chat history, formulate a standalone question \
     which can be understood without the chat history. Do NOT answer the question, \
